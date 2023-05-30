@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from datetime import datetime
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -62,25 +62,22 @@ class PostDetail(DetailView):
         return Post.objects.filter(categoryType='NW')
 
 
-class PostCreate(LoginRequiredMixin, CreateView):
-  #  permission_required = ('news.add_post',)
-    raise_exception = True
+class PostCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
 
-class PostUpdate(LoginRequiredMixin, UpdateView):
-   # permission_required = ('news.change_post',)
-    raise_exception = True
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
-# Представление удаляющее товар.
-class PostDelete(LoginRequiredMixin, DeleteView):
-   # permission_required = ('news.delete_post',)
-    raise_exception = True
+
+class PostDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post',)
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('post_list')
